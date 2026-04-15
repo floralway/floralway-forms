@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>課後回饋問卷｜質穎形象顏究室®</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+TC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3EE;
+    --warm-white: #FAFAF8;
+    --charcoal: #2C2C2C;
+    --muted: #7A756F;
+    --accent: #8B7355;
+    --accent-light: #C4A882;
+    --border: #DDD8D0;
+    --highlight: #F0EAE1;
+    --error: #B85C4A;
+    --success: #5A7A5A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ─── Header ─── */
+  .site-header {
+    background: var(--charcoal);
+    color: var(--cream);
+    text-align: center;
+    padding: 3rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.015) 60px,
+      rgba(255,255,255,0.015) 61px
+    );
+  }
+  .brand-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    color: var(--accent-light);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  .site-header h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 300;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+  .site-header p {
+    font-size: 0.85rem;
+    color: rgba(247,243,238,0.6);
+    letter-spacing: 0.05em;
+  }
+  .deco-line {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-light);
+    margin: 1.25rem auto;
+  }
+
+  /* ─── Progress ─── */
+  .progress-wrap {
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .progress-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+  .progress-bar-bg {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+  .progress-pct {
+    font-size: 0.75rem;
+    color: var(--accent);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  /* ─── Main ─── */
+  .main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  /* ─── Section Headers ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0 1.75rem;
+  }
+  .section-header:first-of-type { margin-top: 0; }
+  .section-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--accent-light);
+    line-height: 1;
+    min-width: 2rem;
+  }
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    letter-spacing: 0.08em;
+    color: var(--charcoal);
+  }
+  .section-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Question Card ─── */
+  .q-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.75rem 1.75rem 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+  .q-card:focus-within {
+    border-color: var(--accent-light);
+  }
+  .q-label {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+  }
+  .q-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .required {
+    color: var(--error);
+    margin-left: 0.15rem;
+  }
+
+  /* ─── Star Rating ─── */
+  .star-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .star-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .star-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+  .rating-btn {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: 2px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rating-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--highlight);
+  }
+  .rating-btn.selected {
+    background: var(--charcoal);
+    border-color: var(--charcoal);
+    color: var(--cream);
+  }
+
+  /* NPS 0-10 */
+  .nps-row {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .nps-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: 2px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nps-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--highlight);
+  }
+  .nps-btn.selected {
+    background: var(--charcoal);
+    border-color: var(--charcoal);
+    color: var(--cream);
+  }
+  .nps-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+
+  /* ─── Radio / Checkbox ─── */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .option-item:hover {
+    border-color: var(--accent-light);
+    background: var(--highlight);
+  }
+  .option-item.selected {
+    border-color: var(--charcoal);
+    background: var(--highlight);
+  }
+  .option-item input[type="radio"],
+  .option-item input[type="checkbox"] {
+    display: none;
+  }
+  .custom-dot {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    margin-top: 1px;
+    position: relative;
+    transition: all 0.15s;
+    background: white;
+  }
+  .option-item.selected .custom-dot {
+    border-color: var(--charcoal);
+    background: var(--charcoal);
+  }
+  .option-item.selected .custom-dot::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .custom-box {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+    margin-top: 1px;
+    position: relative;
+    transition: all 0.15s;
+    background: white;
+  }
+  .option-item.selected .custom-box {
+    border-color: var(--charcoal);
+    background: var(--charcoal);
+  }
+  .option-item.selected .custom-box::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 11px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+  }
+  .option-text {
+    font-size: 0.9rem;
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+
+  /* Other input inline */
+  .other-input {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 0.85rem;
+    color: var(--charcoal);
+    outline: none;
+  }
+  .other-input::placeholder { color: var(--muted); }
+  .other-input:focus { border-bottom-color: var(--accent); }
+
+  /* ─── Textarea ─── */
+  textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.9rem 1rem;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 0.88rem;
+    color: var(--charcoal);
+    background: white;
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.8;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: var(--accent-light); }
+  textarea::placeholder { color: var(--muted); }
+
+  /* ─── Consent ─── */
+  .consent-box {
+    background: var(--highlight);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.5rem;
+  }
+  .consent-options {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .consent-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border);
+    background: white;
+    border-radius: 2px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--charcoal);
+    text-align: center;
+  }
+  .consent-btn:hover { border-color: var(--accent); }
+  .consent-btn.selected-yes {
+    background: var(--charcoal);
+    border-color: var(--charcoal);
+    color: white;
+  }
+  .consent-btn.selected-no {
+    background: white;
+    border-color: var(--muted);
+    color: var(--muted);
+  }
+  .consent-items {
+    list-style: none;
+    margin: 0.75rem 0 0;
+  }
+  .consent-items li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    padding: 0.2rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .consent-items li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--accent-light);
+  }
+
+  /* ─── Submit ─── */
+  .submit-wrap {
+    margin-top: 3rem;
+    text-align: center;
+  }
+  .submit-btn {
+    background: var(--charcoal);
+    color: var(--cream);
+    border: none;
+    padding: 1rem 3rem;
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+  .submit-btn:hover {
+    background: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  .submit-note {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 1rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ─── Thank You ─── */
+  .thank-you {
+    display: none;
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+  .thank-you.show { display: block; }
+  .ty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .ty-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .ty-text {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .ty-brand {
+    margin-top: 2.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--accent-light);
+    text-transform: uppercase;
+  }
+
+  /* ─── Validation ─── */
+  .error-msg {
+    font-size: 0.75rem;
+    color: var(--error);
+    margin-top: 0.4rem;
+    display: none;
+  }
+  .q-card.has-error { border-color: var(--error); }
+  .q-card.has-error .error-msg { display: block; }
+
+  /* ─── Divider ─── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 480px) {
+    .rating-btn { width: 40px; height: 40px; }
+    .nps-btn { width: 34px; height: 34px; font-size: 0.85rem; }
+    .nps-row { gap: 0.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="brand-mark">質穎形象顏究室® · Floralway Image Studio</div>
+  <div class="deco-line"></div>
+  <h1>課後回饋問卷</h1>
+  <p>您的回饋，是我繼續陪伴更多人的動力</p>
+</header>
+
+<!-- Progress -->
+<div class="progress-wrap">
+  <span class="progress-label">填寫進度</span>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+  <span class="progress-pct" id="progressPct">0%</span>
+</div>
+
+<!-- Form -->
+<main class="main" id="surveyForm">
+
+  <!-- Section 1 -->
+  <div class="section-header">
+    <span class="section-num">I</span>
+    <div>
+      <div class="section-title">課前 vs 課後的轉變</div>
+      <div class="section-sub">讓我看見這堂課帶給你的改變</div>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="card-q1">
+    <span class="q-num">Q 01</span>
+    <div class="q-label">上課<strong>前</strong>，你對「如何選擇適合自己的穿搭」的清晰程度是？<span class="required">*</span></div>
+    <div class="star-scale">
+      <div class="star-row" id="q1-row">
+        <button type="button" class="rating-btn" data-q="q1" data-v="1" onclick="selectRating('q1',1)">1</button>
+        <button type="button" class="rating-btn" data-q="q1" data-v="2" onclick="selectRating('q1',2)">2</button>
+        <button type="button" class="rating-btn" data-q="q1" data-v="3" onclick="selectRating('q1',3)">3</button>
+        <button type="button" class="rating-btn" data-q="q1" data-v="4" onclick="selectRating('q1',4)">4</button>
+        <button type="button" class="rating-btn" data-q="q1" data-v="5" onclick="selectRating('q1',5)">5</button>
+      </div>
+      <div class="star-labels">
+        <span>完全不清楚</span>
+        <span>非常清楚</span>
+      </div>
+    </div>
+    <div class="error-msg">請選擇一個分數</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="card-q2">
+    <span class="q-num">Q 02</span>
+    <div class="q-label">上完課<strong>後</strong>，你對「如何選擇適合自己的穿搭」的清晰程度是？<span class="required">*</span></div>
+    <div class="star-scale">
+      <div class="star-row" id="q2-row">
+        <button type="button" class="rating-btn" data-q="q2" data-v="1" onclick="selectRating('q2',1)">1</button>
+        <button type="button" class="rating-btn" data-q="q2" data-v="2" onclick="selectRating('q2',2)">2</button>
+        <button type="button" class="rating-btn" data-q="q2" data-v="3" onclick="selectRating('q2',3)">3</button>
+        <button type="button" class="rating-btn" data-q="q2" data-v="4" onclick="selectRating('q2',4)">4</button>
+        <button type="button" class="rating-btn" data-q="q2" data-v="5" onclick="selectRating('q2',5)">5</button>
+      </div>
+      <div class="star-labels">
+        <span>完全不清楚</span>
+        <span>非常清楚</span>
+      </div>
+    </div>
+    <div class="error-msg">請選擇一個分數</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="card-q3">
+    <span class="q-num">Q 03</span>
+    <div class="q-label">上完這堂課，你覺得自己<strong>最大的改變</strong>是什麼？<span class="required">*</span></div>
+    <textarea id="q3" placeholder="請用自己的話分享……" oninput="updateProgress()"></textarea>
+    <div class="error-msg">請填寫這題</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 2 -->
+  <div class="section-header">
+    <span class="section-num">II</span>
+    <div>
+      <div class="section-title">認知翻轉</div>
+      <div class="section-sub">哪個觀念讓你最有感？</div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="card-q4">
+    <span class="q-num">Q 04</span>
+    <div class="q-label">這堂課最<strong>顛覆你原本觀念</strong>的是？（可複選）</div>
+    <div class="options-list" id="q4-options">
+      <div class="option-item" data-value="穿搭不是風格模仿，而是判斷邏輯" onclick="toggleCheckbox(this,'q4')">
+        <span class="custom-box"></span>
+        <span class="option-text">穿搭不是風格模仿，而是判斷邏輯</span>
+      </div>
+      <div class="option-item" data-value="色彩原來可以影響形象傳達" onclick="toggleCheckbox(this,'q4')">
+        <span class="custom-box"></span>
+        <span class="option-text">色彩原來可以影響形象傳達</span>
+      </div>
+      <div class="option-item" data-value="骨骼比例比流行更重要" onclick="toggleCheckbox(this,'q4')">
+        <span class="custom-box"></span>
+        <span class="option-text">骨骼／比例比流行更重要</span>
+      </div>
+      <div class="option-item" data-value="材質與分量感的影響" onclick="toggleCheckbox(this,'q4')">
+        <span class="custom-box"></span>
+        <span class="option-text">材質與分量感的影響</span>
+      </div>
+      <div class="option-item" data-value="other-q4" id="q4-other-item" onclick="toggleCheckbox(this,'q4')">
+        <span class="custom-box"></span>
+        <span class="option-text">其他：<input type="text" class="other-input" id="q4-other-text" placeholder="請填寫……" onclick="event.stopPropagation()" oninput="updateProgress()"></span>
+      </div>
+    </div>
+    <div class="error-msg">請至少選擇一項</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="card-q5">
+    <span class="q-num">Q 05</span>
+    <div class="q-label">有沒有哪一個內容，讓你有「<strong>原來是這樣！</strong>」的感覺？</div>
+    <textarea id="q5" placeholder="分享你的 aha moment……" oninput="updateProgress()"></textarea>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 3 -->
+  <div class="section-header">
+    <span class="section-num">III</span>
+    <div>
+      <div class="section-title">實際行動</div>
+      <div class="section-sub">學到了，有沒有開始用？</div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="card-q6">
+    <span class="q-num">Q 06</span>
+    <div class="q-label">上完課後，你是否開始<strong>實際調整</strong>自己的穿搭？<span class="required">*</span></div>
+    <div class="options-list" id="q6-options">
+      <label class="option-item" onclick="selectRadio(this,'q6')">
+        <input type="radio" name="q6" value="已經開始調整">
+        <span class="custom-dot"></span>
+        <span class="option-text">已經開始調整 ✨</span>
+      </label>
+      <label class="option-item" onclick="selectRadio(this,'q6')">
+        <input type="radio" name="q6" value="有想法但還沒開始">
+        <span class="custom-dot"></span>
+        <span class="option-text">有想法，但還沒開始行動</span>
+      </label>
+      <label class="option-item" onclick="selectRadio(this,'q6')">
+        <input type="radio" name="q6" value="還沒有">
+        <span class="custom-dot"></span>
+        <span class="option-text">還沒有</span>
+      </label>
+    </div>
+    <div class="error-msg">請選擇一項</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="card-q7">
+    <span class="q-num">Q 07</span>
+    <div class="q-label">你已經（或打算）做的<strong>第一個改變</strong>是什麼？</div>
+    <textarea id="q7" placeholder="哪怕是小小的一步，都值得被記下來……" oninput="updateProgress()"></textarea>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 4 -->
+  <div class="section-header">
+    <span class="section-num">IV</span>
+    <div>
+      <div class="section-title">課程價值評估</div>
+      <div class="section-sub">具體感受這堂課帶來的幫助</div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="card-q8">
+    <span class="q-num">Q 08</span>
+    <div class="q-label">這堂課的<strong>實用程度</strong>為？<span class="required">*</span></div>
+    <div class="star-scale">
+      <div class="star-row" id="q8-row">
+        <button type="button" class="rating-btn" onclick="selectRating('q8',1)">1</button>
+        <button type="button" class="rating-btn" onclick="selectRating('q8',2)">2</button>
+        <button type="button" class="rating-btn" onclick="selectRating('q8',3)">3</button>
+        <button type="button" class="rating-btn" onclick="selectRating('q8',4)">4</button>
+        <button type="button" class="rating-btn" onclick="selectRating('q8',5)">5</button>
+      </div>
+      <div class="star-labels">
+        <span>完全不實用</span>
+        <span>非常實用</span>
+      </div>
+    </div>
+    <div class="error-msg">請選擇一個分數</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="card-q9">
+    <span class="q-num">Q 09</span>
+    <div class="q-label">這堂課對「<strong>個人形象／生活／工作</strong>」的幫助程度？<span class="required">*</span></div>
+    <div class="star-scale">
+      <div class="star-row" id="q9-row">
+        <button type="button" class="rating-btn" onclick="selectRating('q9',1)">1</button>
+        <button type="button" class="rating-btn" onclick="selectRating('q9',2)">2</button>
+        <button type="button" class="rating-btn" onclick="selectRating('q9',3)">3</button>
+        <button type="button" class="rating-btn" onclick="selectRating('q9',4)">4</button>
+        <button type="button" class="rating-btn" onclick="selectRating('q9',5)">5</button>
+      </div>
+      <div class="star-labels">
+        <span>完全沒幫助</span>
+        <span>非常有幫助</span>
+      </div>
+    </div>
+    <div class="error-msg">請選擇一個分數</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="card-q10">
+    <span class="q-num">Q 10</span>
+    <div class="q-label">這堂課對你<strong>最大的幫助</strong>是什麼？<span class="required">*</span></div>
+    <textarea id="q10" placeholder="歡迎具體描述……" oninput="updateProgress()"></textarea>
+    <div class="error-msg">請填寫這題</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 5 -->
+  <div class="section-header">
+    <span class="section-num">V</span>
+    <div>
+      <div class="section-title">進一步了解</div>
+      <div class="section-sub">如果你想繼續深入……</div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="q-card" id="card-q11">
+    <span class="q-num">Q 11</span>
+    <div class="q-label">如果有更進階或個人化的服務／課程，你的興趣是？<span class="required">*</span></div>
+    <div class="options-list" id="q11-options">
+      <label class="option-item" onclick="selectRadio(this,'q11')">
+        <input type="radio" name="q11" value="非常有興趣">
+        <span class="custom-dot"></span>
+        <span class="option-text">非常有興趣</span>
+      </label>
+      <label class="option-item" onclick="selectRadio(this,'q11')">
+        <input type="radio" name="q11" value="有興趣">
+        <span class="custom-dot"></span>
+        <span class="option-text">有興趣</span>
+      </label>
+      <label class="option-item" onclick="selectRadio(this,'q11')">
+        <input type="radio" name="q11" value="普通">
+        <span class="custom-dot"></span>
+        <span class="option-text">普通</span>
+      </label>
+      <label class="option-item" onclick="selectRadio(this,'q11')">
+        <input type="radio" name="q11" value="暫無需求">
+        <span class="custom-dot"></span>
+        <span class="option-text">暫無需求</span>
+      </label>
+    </div>
+    <div class="error-msg">請選擇一項</div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="q-card" id="card-q12">
+    <span class="q-num">Q 12</span>
+    <div class="q-label">你比較有興趣的服務形式是？（可複選）</div>
+    <div class="options-list" id="q12-options">
+      <div class="option-item" data-value="一對一個人分析" onclick="toggleCheckbox(this,'q12')">
+        <span class="custom-box"></span>
+        <span class="option-text">一對一個人分析</span>
+      </div>
+      <div class="option-item" data-value="小班進階課" onclick="toggleCheckbox(this,'q12')">
+        <span class="custom-box"></span>
+        <span class="option-text">小班進階課</span>
+      </div>
+      <div class="option-item" data-value="實戰穿搭課（陪你執行）" onclick="toggleCheckbox(this,'q12')">
+        <span class="custom-box"></span>
+        <span class="option-text">實戰穿搭課（陪你執行）</span>
+      </div>
+      <div class="option-item" data-value="線上課程" onclick="toggleCheckbox(this,'q12')">
+        <span class="custom-box"></span>
+        <span class="option-text">線上課程</span>
+      </div>
+      <div class="option-item" data-value="other-q12" onclick="toggleCheckbox(this,'q12')">
+        <span class="custom-box"></span>
+        <span class="option-text">其他：<input type="text" class="other-input" id="q12-other-text" placeholder="請填寫……" onclick="event.stopPropagation()" oninput="updateProgress()"></span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 6 -->
+  <div class="section-header">
+    <span class="section-num">VI</span>
+    <div>
+      <div class="section-title">你願意推薦嗎？</div>
+      <div class="section-sub">最直接的信任度指標</div>
+    </div>
+  </div>
+
+  <!-- Q13 NPS -->
+  <div class="q-card" id="card-q13">
+    <span class="q-num">Q 13</span>
+    <div class="q-label">你有多大<strong>意願推薦這堂課</strong>給朋友或同事？<span class="required">*</span>
+    <br><small style="color:var(--muted);font-size:0.78rem;">0 = 完全不會推薦　　10 = 非常願意推薦</small></div>
+    <div class="nps-row" id="q13-row">
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',0)">0</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',1)">1</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',2)">2</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',3)">3</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',4)">4</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',5)">5</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',6)">6</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',7)">7</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',8)">8</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',9)">9</button>
+      <button type="button" class="nps-btn" onclick="selectNPS('q13',10)">10</button>
+    </div>
+    <div class="nps-labels">
+      <span>完全不會</span>
+      <span>非常願意</span>
+    </div>
+    <div class="error-msg">請選擇一個分數</div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="q-card" id="card-q14">
+    <span class="q-num">Q 14</span>
+    <div class="q-label">如果要你用<strong>一句話</strong>推薦這堂課，你會怎麼說？<span class="required">*</span></div>
+    <textarea id="q14" rows="2" style="min-height:70px" placeholder="你的一句話，也許是下一個人踏出改變的理由……" oninput="updateProgress()"></textarea>
+    <div class="error-msg">請填寫這題</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Section 7 -->
+  <div class="section-header">
+    <span class="section-num">VII</span>
+    <div>
+      <div class="section-title">授權聲明</div>
+      <div class="section-sub">你的同意，讓這份回饋走得更遠</div>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="q-card" id="card-q15">
+    <span class="q-num">Q 15</span>
+    <div class="q-label">是否同意將你的回饋內容<strong>匿名用於</strong>以下用途？<span class="required">*</span></div>
+    <div class="consent-box">
+      <ul class="consent-items">
+        <li>官網案例分享</li>
+        <li>課程宣傳素材</li>
+        <li>合作提案資料</li>
+      </ul>
+      <div class="consent-options">
+        <button type="button" class="consent-btn" id="consent-yes" onclick="selectConsent('yes')">✓ 同意匿名使用</button>
+        <button type="button" class="consent-btn" id="consent-no" onclick="selectConsent('no')">不同意</button>
+      </div>
+    </div>
+    <div class="error-msg">請選擇是否同意</div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-wrap">
+    <button type="button" class="submit-btn" onclick="submitForm()">送出回饋</button>
+    <p class="submit-note">填寫約需 3～5 分鐘 · 所有回答均保密處理</p>
+  </div>
+
+</main>
+
+<!-- Thank You -->
+<div class="thank-you" id="thankYou">
+  <div class="ty-icon">✿</div>
+  <div class="ty-title">謝謝你的回饋</div>
+  <p class="ty-text">
+    每一個字，我都會認真讀。<br>
+    你的分享，是我繼續走這條路最真實的動力。<br><br>
+    期待有一天，在你的衣櫥前，<br>再一次看見更自信的你。
+  </p>
+  <div class="ty-brand">質穎形象顏究室® · Floralway Image Studio</div>
+</div>
+
+<script>
+  // State
+  const answers = {
+    q1: null, q2: null, q3: '', q4: [], q5: '',
+    q6: null, q7: '', q8: null, q9: null, q10: '',
+    q11: null, q12: [], q13: null, q14: '', consent: null
+  };
+
+  const REQUIRED = ['q1','q2','q3','q6','q8','q9','q10','q11','q13','q14','consent'];
+
+  function selectRating(q, v) {
+    answers[q] = v;
+    document.querySelectorAll(`#${q}-row .rating-btn`).forEach(btn => {
+      btn.classList.toggle('selected', parseInt(btn.dataset?.v || btn.textContent) === v);
+    });
+    // For dynamic rows without data-v
+    const row = document.getElementById(`${q}-row`);
+    if (row) {
+      row.querySelectorAll('.rating-btn').forEach((btn, i) => {
+        btn.classList.toggle('selected', (i+1) === v);
+      });
+    }
+    clearError(`card-${q}`);
+    updateProgress();
+  }
+
+  function selectNPS(q, v) {
+    answers[q] = v;
+    document.querySelectorAll(`#${q}-row .nps-btn`).forEach((btn, i) => {
+      btn.classList.toggle('selected', i === v);
+    });
+    clearError(`card-${q}`);
+    updateProgress();
+  }
+
+  function selectRadio(el, q) {
+    const val = el.querySelector('input').value;
+    answers[q] = val;
+    document.querySelectorAll(`#${q}-options .option-item`).forEach(item => {
+      item.classList.remove('selected');
+    });
+    el.classList.add('selected');
+    clearError(`card-${q}`);
+    updateProgress();
+  }
+
+  function toggleCheckbox(el, q) {
+    const val = el.dataset.value;
+    const isSelected = el.classList.contains('selected');
+    if (isSelected) {
+      el.classList.remove('selected');
+      answers[q] = answers[q].filter(v => v !== val);
+    } else {
+      el.classList.add('selected');
+      if (!answers[q].includes(val)) answers[q].push(val);
+    }
+    updateProgress();
+  }
+
+  function selectConsent(v) {
+    answers.consent = v;
+    document.getElementById('consent-yes').className = 'consent-btn' + (v==='yes' ? ' selected-yes' : '');
+    document.getElementById('consent-no').className = 'consent-btn' + (v==='no' ? ' selected-no' : '');
+    clearError('card-q15');
+    updateProgress();
+  }
+
+  function clearError(cardId) {
+    document.getElementById(cardId)?.classList.remove('has-error');
+  }
+
+  function updateProgress() {
+    answers.q3 = document.getElementById('q3')?.value.trim() || '';
+    answers.q5 = document.getElementById('q5')?.value.trim() || '';
+    answers.q7 = document.getElementById('q7')?.value.trim() || '';
+    answers.q10 = document.getElementById('q10')?.value.trim() || '';
+    answers.q14 = document.getElementById('q14')?.value.trim() || '';
+
+    let filled = 0;
+    REQUIRED.forEach(k => {
+      const v = answers[k];
+      if (k === 'q3' || k === 'q10' || k === 'q14') { if (v && v.length > 0) filled++; }
+      else if (k === 'consent') { if (v !== null) filled++; }
+      else { if (v !== null && v !== undefined) filled++; }
+    });
+    const pct = Math.round((filled / REQUIRED.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+  }
+
+  // ★ 貼上你的 Google Apps Script 網址
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7GjXiG6c_Gq_2fJnpZDkYFJRxigYQuyEeZGY3L5QFjyLeXGsCrO51Vob5lnq-VCW9/exec';
+
+  function submitForm() {
+    // Sync text answers
+    answers.q3  = document.getElementById('q3')?.value.trim()  || '';
+    answers.q5  = document.getElementById('q5')?.value.trim()  || '';
+    answers.q7  = document.getElementById('q7')?.value.trim()  || '';
+    answers.q10 = document.getElementById('q10')?.value.trim() || '';
+    answers.q14 = document.getElementById('q14')?.value.trim() || '';
+
+    let valid = true;
+    const fieldMap = {
+      q1: 'card-q1', q2: 'card-q2', q3: 'card-q3',
+      q6: 'card-q6', q8: 'card-q8', q9: 'card-q9',
+      q10: 'card-q10', q11: 'card-q11', q13: 'card-q13',
+      q14: 'card-q14', consent: 'card-q15'
+    };
+
+    REQUIRED.forEach(k => {
+      const v = answers[k];
+      let filled = false;
+      if (k === 'q3' || k === 'q10' || k === 'q14') filled = v && v.length > 0;
+      else if (k === 'consent') filled = v !== null;
+      else filled = v !== null && v !== undefined;
+
+      const cardId = fieldMap[k];
+      if (!filled) {
+        document.getElementById(cardId)?.classList.add('has-error');
+        valid = false;
+      } else {
+        document.getElementById(cardId)?.classList.remove('has-error');
+      }
+    });
+
+    if (!valid) {
+      const firstError = document.querySelector('.q-card.has-error');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // 送出按鈕改為 loading 狀態
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = '送出中……';
+    btn.disabled = true;
+
+    // 整理 q4 / q12 其他選項
+    const q4Other = document.getElementById('q4-other-text')?.value.trim();
+    const q12Other = document.getElementById('q12-other-text')?.value.trim();
+    const q4Final = answers.q4.map(v => v === 'other' ? (q4Other ? '其他：' + q4Other : '其他') : v);
+    const q12Final = answers.q12.map(v => v === 'other-q12' ? (q12Other ? '其他：' + q12Other : '其他') : v);
+
+    const payload = {
+      timestamp: new Date().toLocaleString('zh-TW', {timeZone:'Asia/Taipei'}),
+      q1_before:  answers.q1,
+      q2_after:   answers.q2,
+      q3_biggest_change: answers.q3,
+      q4_mindset_shift:  q4Final.join('、'),
+      q5_aha:     answers.q5,
+      q6_action:  answers.q6,
+      q7_first_step: answers.q7,
+      q8_practical:  answers.q8,
+      q9_impact:     answers.q9,
+      q10_biggest_help: answers.q10,
+      q11_interest:  answers.q11,
+      q12_format:    q12Final.join('、'),
+      q13_nps:       answers.q13,
+      q14_quote:     answers.q14,
+      q15_consent:   answers.consent === 'yes' ? '同意' : '不同意'
+    };
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      showThankYou();
+    })
+    .catch(() => {
+      // 即使網路問題，仍顯示感謝頁（no-cors 模式下 fetch 不會拋錯）
+      showThankYou();
+    });
+  }
+
+  function showThankYou() {
+    document.getElementById('surveyForm').style.display = 'none';
+    const ty = document.getElementById('thankYou');
+    ty.classList.add('show');
+    document.querySelector('.progress-wrap').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
